@@ -1,0 +1,165 @@
+<html>
+<head>
+	<title>Project 3</title>
+</head>
+
+<body>
+	<canvas id="canvas" width="800" height="800"></canvas>
+	<script>
+	var canvas = document.getElementById('canvas');
+	var context = canvas.getContext('2d');
+	var ok = true;
+	var color;
+	var timer;
+	
+	var l = 0;
+	
+	var xlineDraw = new Array();
+	var ylineDraw = new Array();
+
+		
+		
+
+	for(yn=0;yn<34;yn++){
+	
+		xlineDraw[0] = 80;
+		ylineDraw[0] = 80;
+				
+		if(yn < 8){
+			xlineDraw[yn+1] = xlineDraw[yn] + 80;
+			ylineDraw[yn+1] = ylineDraw[yn] + Math.random() * (41 + 40) - 40;
+		}else if(yn == 8){
+			xlineDraw[yn+1] = canvas.width - 80;
+			ylineDraw[yn+1] = 80;
+		}else if(yn > 8 && yn < 16){
+			ylineDraw[yn+1] = ylineDraw[yn] + 80;
+			xlineDraw[yn+1] = xlineDraw[yn] + Math.random() * (41 + 40) - 40;
+		}else if(yn == 16){
+			ylineDraw[yn+1] = canvas.height - 80;
+			xlineDraw[yn+1] = canvas.width - 80;
+		}else if(yn > 16 && yn < 24){
+			xlineDraw[yn+1] = xlineDraw[yn] - 80;
+			ylineDraw[yn+1] = ylineDraw[yn] + Math.random() * (41 + 40) - 40;
+		}else if(yn == 24){
+			ylineDraw[yn+1] = canvas.height - 80;
+			xlineDraw[yn+1] = 80;
+		}else if(yn > 24 && yn < 32){
+			ylineDraw[yn+1] = ylineDraw[yn] - 80;
+			xlineDraw[yn+1] = xlineDraw[yn] + Math.random() * (41 + 40) - 40;
+		}else if(yn == 32){
+			xlineDraw[yn+1] = 80;
+			ylineDraw[yn+1] = 80;
+		}else if(yn >= 33){
+			//yn = 0;
+		}
+	}
+	
+	yn = 0;
+	
+	//color scheme arrays
+	var colors = new Array();
+	colors[0] = new Array("#AA3939","#550000","#FFAAAA","#AA6C39","#882D61","#F2B5B5");
+	colors[1] = new Array("#226765","#004441","#67A09E","#2E4272","#378B2E","#B5E1F2");
+	colors[2] = new Array("#AAA439","#716C08","#FFFBB6","#86A136","#AA9139","#E5F2B5");
+	
+	//randomly pick the color scheme
+	var schemepick = Math.floor(Math.random() * colors.length);
+	console.log("schemepick " + schemepick);
+	var schemelength = colors[schemepick].length;
+
+	function drawStuff(canvas,context,color){
+		
+		//use lightest color for background
+		context.fillStyle = colors[schemepick][schemelength-1];
+		console.log("schemelength" + schemelength);
+		context.fillRect(0,0,canvas.width,canvas.height);
+		
+		setInterval(function(){
+			
+			//replace background
+			context.fillStyle = colors[schemepick][schemelength-1];
+			context.fillRect(0,0,canvas.width,canvas.height);
+			
+			
+			for(m=0;m<=34;m++){
+				
+				
+				context.beginPath();
+				context.moveTo(xlineDraw[m],ylineDraw[m]);
+				context.lineTo(xlineDraw[m+1],ylineDraw[m+1]);
+				color = colors[schemepick][4];
+				context.strokeStyle = color;
+				context.lineWidth = 5;
+				context.stroke();
+				console.log(m + xlineDraw[m]);
+				
+			}
+			
+			//l++;
+			
+			for(j=0;j<10;j++){
+				
+				//use darkest color for semi circles
+				color = colors[schemepick][1];
+				context.beginPath();
+				//10 semis, evenly spaced at top of canvas
+				var semix = canvas.width/20 + j*canvas.width/10;
+				var semiy = 0;
+				var radius = canvas.width/20;
+				context.arc(semix,semiy,radius,0,Math.PI);
+				context.fillStyle = color;
+				context.fill();
+				
+
+			}
+			
+			//one big semi at bottom of canvas, like a stage
+			context.beginPath();
+			context.arc(canvas.width/2,canvas.height*2.875,canvas.width*2,0,0.25*Math.PI,true);
+			context.fill();
+			
+			//rubix cube
+			for(k=0;k<11;k++){
+			
+				for(i=0;i<11;i++){
+				
+					//randomly pick color out of color scheme
+					var colorpick = Math.floor(Math.random() * (colors[schemepick].length));
+					//draw squares
+					color = colors[schemepick][colorpick];
+					var xend = canvas.width/20;
+					var yend = canvas.height/20;
+					var x = i * canvas.width/20 + canvas.width/4 + i * xend/10 - xend;
+					var y = k * canvas.width/20 + canvas.width/4 + k * yend/10 - yend;
+					context.fillStyle = color;
+					context.fillRect(x,y,xend,yend);
+				}
+			}
+
+				
+				
+		/*
+		var size = 100;
+		g=100;
+		h=100;
+		context.beginPath();
+		context.moveTo(200,0);
+		context.lineTo(200,640);
+		context.stroke();*/
+		},100);
+		
+
+		
+
+	
+		
+		
+
+			
+	}
+	
+drawStuff(canvas,context,color);
+	
+</script>
+</body>
+</html>	
